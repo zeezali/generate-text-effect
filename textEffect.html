@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8" />
+
+<title>Crazy Text Effect</title>
+
+<style>
+	html {
+		background: black;
+		color: white;
+		font-size: 100%;
+		min-height: 100%;
+		-webkit-font-smoothing: antialiased;
+	}
+
+	#holder {
+		position: absolute;
+		display: table;
+		width: 50em;
+		top: 50%;
+		left: 50%;
+		padding: 10em 0;
+		margin: -10em 0 0 -25em;
+	}
+
+	#caption {
+		display: table-cell;
+		vertical-align: middle;
+		text-align: center;
+		font: 700 normal 1.5em/1.3em Helvetica, Arial, sans-serif;
+		padding: 0 5em;
+	}
+</style>
+
+</head>
+<body>
+
+<div id="holder">
+	<div id="caption"></div>
+</div>
+
+<script type="text/javascript">
+	window.onload = function() {
+		var caption = document.getElementById('caption');
+		var text = new GeneratedText('Crazy ass text effect.', 1, document.getElementById('caption'));
+		text.init();
+	};
+
+
+	var Helpers = {
+		cloneArray: function(array) {
+			var cloned = [];
+			for ( var i = 0; i < array.length; i++) {
+				cloned.push(array[i]);
+			}
+			return cloned;
+		},
+		arrayToString: function(array) {
+			var string = '';
+			for ( var i = 0; i <= array.length - 1; i++ ) {
+				string += array[i];
+			}
+			return string;
+		}
+	};
+
+
+	function GeneratedText(string, iterations, elem) {
+		this.string = string;
+		this.newString = string;
+		this.iterations = iterations;
+		this.elem = elem;
+		this.letterPool = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+	
+		this.randomLetterEffect = function (stringArray, i, counter) {
+			var obj = this;
+			setTimeout(function() {
+				if( i <= stringArray.length - 1 ) {
+   				if ( stringArray[i] != ' ' ) {
+   			    	stringArray[i] = obj.letterPool[Math.round(Math.random() * (obj.letterPool.length - 1) )];
+   					obj.elem.innerHTML = Helpers.arrayToString(stringArray);
+   				}
+   				++i;
+   				obj.randomLetterEffect(stringArray, i, counter);
+				} else {
+					if( counter == obj.iterations ) {
+						obj.recreateString(stringArray, 0);
+					} else {
+						counter = ( typeof counter == 'undefined' ) ? 1 : ++counter;
+						obj.randomLetterEffect(stringArray, 0, counter)
+					}
+				}
+			}, 40);
+   		};
+
+   		this.recreateString = function (stringArray, i) {
+   			var obj = this;
+   			if ( i <= stringArray.length - 1 ) {
+   				setTimeout(function() {
+   				      if ( stringArray[i] != ' ' ) {
+   				         stringArray[i] = obj.string.split("")[i];
+   				         elem.innerHTML = Helpers.arrayToString(stringArray);
+   				      }
+   				      ++i;
+   				      obj.recreateString(stringArray, i);
+   				}, 30);
+   			}
+   		};
+
+   		this.init = function() {
+   			var test = Helpers.cloneArray(this.newString);
+   			for ( var i = 0; i <= test.length - 1; i++ ) {
+   				if ( test[i] != ' ' ) {
+   					test[i] = this.letterPool[Math.round(Math.random() * (this.letterPool.length - 1) )];
+   				}
+   			}
+   			this.elem.innerHTML = Helpers.arrayToString(test);
+   			this.randomLetterEffect(test, 0, 1);
+   		};
+
+	};
+
+</script>
+</body>
+</html>
